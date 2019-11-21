@@ -65,4 +65,12 @@ RUN yum makecache -y && yum install -y elfutils-libelf-devel && \
     done && \
     rm -rf /var/cache/yum/*
 
+# Add hook for rhel/rhcos
+RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
+RUN yum install -y nvidia-container-runtime-hook
+RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
+RUN sed -i 's/#path.*/path = "\/run\/nvidia\/driver\/usr\/bin\/nvidia-container-cli"/g' /etc/nvidia-container-runtime/config.toml
+RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
+
+
 ENTRYPOINT ["nvidia-driver", "init"]
