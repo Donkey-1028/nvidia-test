@@ -2,10 +2,8 @@ FROM registry.access.redhat.com/ubi8:latest
 
 # Add hook for rhel/rhcos
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
-#RUN rpm --import https://nvidia.github.io/nvidia-container-runtime/gpgkey 
-#RUN dnf config-manager --set-disabled   libnvidia-container
-#RUN dnf config-manager --set-enabled   libnvidia-container
-RUN yum -q makecache -y --disablerepo='*' --enablerepo=libnvidia-container
+RUN yum install strace
+RUN strace yum -q makecache -y --disablerepo='*' --enablerepo=libnvidia-container
 RUN yum -q makecache -y --disablerepo='*' --enablerepo=nvidia-container-runtime
 
 RUN yum makecache -y && yum install -v -y nvidia-container-runtime-hook
