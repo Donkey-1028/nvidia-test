@@ -1,5 +1,15 @@
 FROM registry.access.redhat.com/ubi8:latest
 
+# Add hook for rhel/rhcos
+RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
+#RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | rpm --import -
+
+RUN dnf makecache -y && dnf install -v -y nvidia-container-runtime-hook
+RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
+RUN sed -i 's/#path.*/path = "\/run\/nvidia\/driver\/usr\/bin\/nvidia-container-cli"/g' /etc/nvidia-container-runtime/config.toml
+RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
+
+
 RUN dnf install -y \
         ca-certificates \
         curl \
@@ -57,13 +67,6 @@ COPY ${PUBLIC_KEY} kernel/pubkey.x509
 
 ARG PRIVATE_KEY
 ARG KERNEL_VERSION=latest
-
-# Add hook for rhel/rhcos
-RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
-RUN dnf makecache -y && dnf install -y nvidia-container-runtime-hook
-RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
-RUN sed -i 's/#path.*/path = "\/run\/nvidia\/driver\/usr\/bin\/nvidia-container-cli"/g' /etc/nvidia-container-runtime/config.toml
-RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
 
 # Compile the kernel modules and generate precompiled packages for use by the nvidia-installer.
 RUN dnf makecache -y && dnf install -y elfutils-libelf-devel && \
