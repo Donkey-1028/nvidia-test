@@ -260,6 +260,8 @@ EOF
 }
 
 _shutdown() {
+    rm -f /host/etc/containers/oci/hooks.d/oci-nvidia-hook.json
+
     if _unload_driver; then
         _unmount_rootfs
         rm -f ${PID_FILE} ${KERNEL_UPDATE_HOOK}
@@ -298,6 +300,13 @@ init() {
     _load_driver
     _mount_rootfs
     _write_kernel_update_hook
+
+    if [ ! -e /host/etc/containers/oci/hooks.d ]; then
+        mkdir -p /host/etc/containers/oci/hooks.d/
+    fi
+    if [ -e /etc/containers/oci/hooks.d/oci-nvidia-hook.json ]; then
+        cp /etc/containers/oci/hooks.d/oci-nvidia-hook.json /host/etc/containers/oci/hooks.d/.
+    fi
 
     echo "Done, now waiting for signal"
     sleep infinity &
