@@ -1,12 +1,10 @@
 FROM registry.access.redhat.com/ubi8:latest
 
 # Add hook for rhel/rhcos
-RUN yum install -y strace
-RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
-RUN strace yum -q makecache -y --disablerepo='*' --enablerepo=libnvidia-container
-RUN yum -q makecache -y --disablerepo='*' --enablerepo=nvidia-container-runtime
+RUN rpm -ivh https://nvidia.github.io/libnvidia-container/centos7/x86_64/libnvidia-container1-1.0.5-1.x86_64.rpm
+RUN rpm -ivh https://nvidia.github.io/libnvidia-container/centos7/x86_64/libnvidia-container-tools-1.0.5-1.x86_64.rpm
+RUN rpm -ivh https://nvidia.github.io/nvidia-container-runtime/centos7/x86_64/nvidia-container-toolkit-1.0.5-2.x86_64.rpm
 
-RUN yum makecache -y && yum install -v -y nvidia-container-runtime-hook
 RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
 RUN sed -i 's/#path.*/path = "\/run\/nvidia\/driver\/usr\/bin\/nvidia-container-cli"/g' /etc/nvidia-container-runtime/config.toml
 RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
