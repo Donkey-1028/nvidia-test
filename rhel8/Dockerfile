@@ -2,7 +2,10 @@ FROM registry.access.redhat.com/ubi8:latest
 
 # Add hook for rhel/rhcos
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
-#RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | rpm --import -
+#RUN rpm --import https://nvidia.github.io/nvidia-container-runtime/gpgkey 
+RUN dnf config-manager --set-disabled   libnvidia-container
+RUN dnf config-manager --set-enabled   libnvidia-container
+
 
 RUN dnf makecache -y && dnf install -v -y nvidia-container-runtime-hook
 RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
