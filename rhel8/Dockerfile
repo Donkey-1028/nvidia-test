@@ -3,17 +3,18 @@ FROM registry.access.redhat.com/ubi8:latest
 # Add hook for rhel/rhcos
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | tee /etc/yum.repos.d/nvidia-container-runtime.repo
 #RUN rpm --import https://nvidia.github.io/nvidia-container-runtime/gpgkey 
-RUN dnf config-manager --set-disabled   libnvidia-container
-RUN dnf config-manager --set-enabled   libnvidia-container
+#RUN dnf config-manager --set-disabled   libnvidia-container
+#RUN dnf config-manager --set-enabled   libnvidia-container
+RUN yum -q makecache -y --disablerepo='*' --enablerepo=libnvidia-container
+RUN yum -q makecache -y --disablerepo='*' --enablerepo=nvidia-container-runtime
 
-
-RUN dnf makecache -y && dnf install -v -y nvidia-container-runtime-hook
+RUN yum makecache -y && yum install -v -y nvidia-container-runtime-hook
 RUN sed -i 's/#root/root/g' /etc/nvidia-container-runtime/config.toml
 RUN sed -i 's/#path.*/path = "\/run\/nvidia\/driver\/usr\/bin\/nvidia-container-cli"/g' /etc/nvidia-container-runtime/config.toml
 RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
 
 
-RUN dnf install -y \
+RUN yum install -y \
         ca-certificates \
         curl \
         gcc \
@@ -21,7 +22,7 @@ RUN dnf install -y \
         make \
         cpio \
         kmod && \
-    rm -rf /var/cache/dnf/*
+    rm -rf /var/cache/yum/*
 
 RUN curl -fsSL -o /usr/local/bin/donkey https://github.com/3XX0/donkey/releases/download/v1.1.0/donkey && \
     curl -fsSL -o /usr/local/bin/extract-vmlinux https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux && \
@@ -72,11 +73,11 @@ ARG PRIVATE_KEY
 ARG KERNEL_VERSION=latest
 
 # Compile the kernel modules and generate precompiled packages for use by the nvidia-installer.
-RUN dnf makecache -y && dnf install -y elfutils-libelf-devel && \
+RUN yum makecache -y && yum install -y elfutils-libelf-devel && \
     for version in $(echo $KERNEL_VERSION | tr ',' ' '); do \
         nvidia-driver update -k $version -t builtin ${PRIVATE_KEY:+"-s ${PRIVATE_KEY}"}; \
     done && \
-    rm -rf /var/cache/dnf/*
+    rm -rf /var/cache/yum/*
 
 
 
