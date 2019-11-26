@@ -261,7 +261,6 @@ EOF
 
 _shutdown() {
     rm -f /host/etc/containers/oci/hooks.d/oci-nvidia-hook.json
-
     if _unload_driver; then
         _unmount_rootfs
         rm -f ${PID_FILE} ${KERNEL_UPDATE_HOOK}
