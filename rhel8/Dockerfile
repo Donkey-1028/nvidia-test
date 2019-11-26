@@ -6,7 +6,7 @@ COPY RPM-GPG-KEY-centosofficial /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 # Add hook for rhel/rhcos
 RUN yum install -y strace
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/rhel7/nvidia-container-runtime.repo | \
-  sudo tee /etc/yum.repos.d/nvidia-container-runtime.repo
+    tee /etc/yum.repos.d/nvidia-container-runtime.repo
 
 
 RUN strace yum makecache -y
