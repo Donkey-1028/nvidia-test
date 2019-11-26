@@ -9,7 +9,7 @@ RUN yum install -y strace
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-container-runtime.repo | \
     tee /etc/yum.repos.d/nvidia-container-runtime.repo
 
-RUN strace yum makecache -y
+#RUN strace yum -y makecache 
 
 RUN strace yum install nvidia-container-runtime-hook -y
 
