@@ -24,8 +24,10 @@ _cleanup_package_cache() {
 
 # Resolve the kernel version to the form major.minor.patch-revision.
 _resolve_kernel_version() {
-    local version=$(yum -q list available --showduplicates kernel-headers | grep -v ubi-8-baseos |
-      awk -v arch=$(uname -m) 'NR>1 {print $2"."arch}' | tac | grep -E -m1 "^${KERNEL_VERSION/latest/.*}")
+    #local version=$(yum -q list available --showduplicates kernel-headers | grep -v ubi-8-baseos |
+    #  awk -v arch=$(uname -m) 'NR>1 {print $2"."arch}' | tac | grep -E -m1 "^${KERNEL_VERSION/latest/.*}")
+    
+    local version=$(uname -r)
 
     echo "Resolving Linux kernel version..."
     if [ -z "${version}" ]; then

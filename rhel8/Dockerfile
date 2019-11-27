@@ -18,6 +18,7 @@ RUN sed -i 's/#debug/debug/g' /etc/nvidia-container-runtime/config.toml
 
 
 RUN yum install -y \
+        kernel-headers-$(uname -r) \
         ca-certificates \
         curl \
         gcc \
