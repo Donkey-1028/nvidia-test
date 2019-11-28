@@ -297,6 +297,8 @@ init() {
         _cleanup_package_cache
     fi
 
+    modprobe -d /host ipmi_msghandler
+
     _install_driver
     _load_driver
     _mount_rootfs
