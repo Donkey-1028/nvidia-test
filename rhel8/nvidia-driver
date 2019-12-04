@@ -289,7 +289,7 @@ init() {
     _unmount_rootfs
 
     chcon -t container_file_t /dev
-    chcon -t container_file_t /dev/*
+    #chcon -t container_file_t /dev/nvidia*
     
 
     if _kernel_requires_package; then
