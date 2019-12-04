@@ -288,6 +288,10 @@ init() {
     _unload_driver || exit 1
     _unmount_rootfs
 
+    chcon -t container_file_t /dev
+    chcon -t container_file_t /dev/*
+    
+
     if _kernel_requires_package; then
         _update_package_cache
         _resolve_kernel_version || exit 1
