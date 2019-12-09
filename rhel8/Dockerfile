@@ -8,7 +8,9 @@ RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/nvidia-
 
 RUN sed -i 's/repo_gpgcheck=1/repo_gpgcheck=0/g' /etc/yum.repos.d/nvidia-container-runtime.repo
 
-RUN yum install nvidia-container-runtime-hook -y
+RUN yum install nvidia-container-runtime-hook -y --downloadonly --downloaddir=/tmp
+RUN rpm -ivh --nodigest --nofiledigest /tmp/*.rpm
+RUN rm /tmp/*.rpm
 
 #RUN rpm -ivh https://nvidia.github.io/libnvidia-container/centos7/x86_64/libnvidia-container1-1.0.5-1.x86_64.rpm
 #RUN rpm -ivh https://nvidia.github.io/libnvidia-container/centos7/x86_64/libnvidia-container-tools-1.0.5-1.x86_64.rpm
