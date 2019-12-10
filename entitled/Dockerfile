@@ -6,10 +6,8 @@ FROM registry.access.redhat.com/ubi8:latest
 COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlment.pem
 COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlement-key.pem
 
-COPY entitled /tmp/.
 
 RUN cat /usr/share/rhel/secrets/etc-pki-entitlement/entitlment.pem
-RUN cat /tmp/entitled
 
 RUN exit 1
 
