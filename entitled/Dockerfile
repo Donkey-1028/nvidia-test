@@ -3,13 +3,8 @@ FROM registry.access.redhat.com/ubi8:latest
 #COPY CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 #COPY RPM-GPG-KEY-centosofficial /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 
-COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlment.pem
-COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlement-key.pem
-
-
-RUN cat /usr/share/rhel/secrets/etc-pki-entitlement/entitlment.pem
-
-RUN exit 1
+COPY *.pem /etc/pki/entitlement/entitlment.pem
+COPY *.pem /etc/pki/entitlement/entitlement-key.pem
 
 RUN dnf search kernel-devel --showduplicates
 
