@@ -3,8 +3,9 @@ FROM registry.access.redhat.com/ubi8:latest
 #COPY CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 #COPY RPM-GPG-KEY-centosofficial /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
 
-RUN ls -l entitled
-RUN cat entitled
+RUN ls -l *
+RUN ls -l ../*
+
 
 COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlment.pem
 COPY *.pem /usr/share/rhel/secrets/etc-pki-entitlement/entitlement-key.pem
