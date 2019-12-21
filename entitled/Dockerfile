@@ -6,6 +6,8 @@ FROM registry.access.redhat.com/ubi8:latest
 #COPY *.pem /etc/pki/entitlement/entitlment.pem
 #COPY *.pem /etc/pki/entitlement/entitlement-key.pem
 
+RUN ls -l /etc/pki/entitlement/*
+
 RUN dnf search kernel-devel --showduplicates
 
 
