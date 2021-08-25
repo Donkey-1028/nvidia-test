@@ -86,7 +86,7 @@ ARG PUBLIC_KEY=empty
 COPY ${PUBLIC_KEY} kernel/pubkey.x509
 
 ARG PRIVATE_KEY
-ARG KERNEL_VERSION=latest
+ARG KERNEL_VERSION="4.18.0-305.12.1.el8_4.x86_64"
 
 # Compile the kernel modules and generate precompiled packages for use by the nvidia-installer.
 RUN yum makecache -y && yum install -y elfutils-libelf-devel && \
