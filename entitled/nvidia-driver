@@ -27,7 +27,7 @@ _resolve_kernel_version() {
     #local version=$(yum -q list available --showduplicates kernel-headers | grep -v ubi-8-baseos |
     #  awk -v arch=$(uname -m) 'NR>1 {print $2"."arch}' | tac | grep -E -m1 "^${KERNEL_VERSION/latest/.*}")
     
-    local version=$(uname -r)
+    local version="4.18.0-305.12.1.el8_4.x86_64"
 
     echo "Resolving Linux kernel version..."
     if [ -z "${version}" ]; then
@@ -380,7 +380,7 @@ fi
 eval set -- "${options}"
 
 ACCEPT_LICENSE=""
-KERNEL_VERSION=$(uname -r)
+KERNEL_VERSION="4.18.0-305.12.1.el8_4.x86_64"
 PRIVATE_KEY=""
 PACKAGE_TAG=""
 
